@@ -56,8 +56,8 @@ final availableCategories = [
   ),
 ];
 
-const dummyMeals = [
-  Meal(
+final dummyMeals = [
+  const Meal(
     id: 'm1',
     categories: [
       'c1',
@@ -91,7 +91,7 @@ const dummyMeals = [
     isVegetarian: true,
     isLactoseFree: true,
   ),
-  Meal(
+  const Meal(
     id: 'm2',
     categories: [
       'c2',
@@ -119,7 +119,7 @@ const dummyMeals = [
     isVegetarian: false,
     isLactoseFree: false,
   ),
-  Meal(
+  const Meal(
     id: 'm3',
     categories: [
       'c2',
@@ -151,7 +151,7 @@ const dummyMeals = [
     isVegetarian: false,
     isLactoseFree: true,
   ),
-  Meal(
+  const Meal(
     id: 'm4',
     categories: [
       'c4',
@@ -186,7 +186,7 @@ const dummyMeals = [
     isVegetarian: false,
     isLactoseFree: false,
   ),
-  Meal(
+  const Meal(
     id: 'm5',
     categories: [
       'c2'
@@ -222,7 +222,7 @@ const dummyMeals = [
     isVegetarian: true,
     isLactoseFree: true,
   ),
-  Meal(
+  const Meal(
     id: 'm6',
     categories: [
       'c6',
@@ -258,7 +258,7 @@ const dummyMeals = [
     isVegetarian: true,
     isLactoseFree: false,
   ),
-  Meal(
+  const Meal(
     id: 'm7',
     categories: [
       'c7',
@@ -289,7 +289,7 @@ const dummyMeals = [
     isVegetarian: true,
     isLactoseFree: false,
   ),
-  Meal(
+  const Meal(
     id: 'm8',
     categories: [
       'c8',
@@ -322,7 +322,7 @@ const dummyMeals = [
     isVegetarian: false,
     isLactoseFree: true,
   ),
-  Meal(
+  const Meal(
     id: 'm9',
     categories: [
       'c9',
@@ -371,7 +371,7 @@ const dummyMeals = [
     isVegetarian: true,
     isLactoseFree: false,
   ),
-  Meal(
+  const Meal(
     id: 'm10',
     categories: [
       'c2',
