@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_meal_app/models/meal.dart';
+import 'package:new_meal_app/widgets/meal_item.dart';
 
 class Meals extends StatelessWidget {
   const Meals({super.key, required this.title, required this.meal});
@@ -38,7 +39,7 @@ class Meals extends StatelessWidget {
         child: ListView.builder(
             itemCount: meal.length,
             itemBuilder: (ctx, index) {
-              return Text(meal[index].title,);
+              return MealItem(meal: meal[index]);
             }),
       );
     }
