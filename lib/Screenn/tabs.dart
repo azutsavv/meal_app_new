@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_meal_app/Screenn/categories.dart';
+import 'package:new_meal_app/Screenn/main_drawer.dart';
 import 'package:new_meal_app/Screenn/meals.dart';
 import 'package:new_meal_app/models/meal.dart';
 
@@ -14,13 +15,31 @@ class _tabsState extends State<tabs> {
   int _selectPageIndex = 0;
   final List<Meal> _favouritemeal = [];
 
+  void _showInfoMessage(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(
+          elevation: 5,
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        content: Text(message)));
+  }
+
   void _toogleMealFavouriteStatus(Meal meal) {
     final isExisting = _favouritemeal.contains(meal);
 
     if (isExisting) {
-      _favouritemeal.remove(meal);
+      setState(() {
+        _favouritemeal.remove(meal);
+      });
+      _showInfoMessage("Removed from favourite list");
     } else {
-      _favouritemeal.add(meal);
+      setState(() {
+        _favouritemeal.add(meal);
+        _showInfoMessage("Added to favourite List");
+      });
     }
   }
 
@@ -32,10 +51,14 @@ class _tabsState extends State<tabs> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activepage = CategoryScreen(ontoggleFavouurite: _toogleMealFavouriteStatus );
+    Widget activepage =
+        CategoryScreen(ontoggleFavouurite: _toogleMealFavouriteStatus);
     var activepagetitle = 'Categories';
     if (_selectPageIndex == 1) {
-      activepage =  Meals(meal: [], ontoggleFavouurite: _toogleMealFavouriteStatus,);
+      activepage = Meals(
+        meal: _favouritemeal,
+        ontoggleFavouurite: _toogleMealFavouriteStatus,
+      );
       activepagetitle = 'Favourite';
     }
 
@@ -43,6 +66,7 @@ class _tabsState extends State<tabs> {
       appBar: AppBar(
         title: Text(activepagetitle),
       ),
+      drawer:const  mainDrawer(),
       body: activepage,
       bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
