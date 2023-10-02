@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_meal_app/Screenn/categories.dart';
+import 'package:new_meal_app/Screenn/filters.dart';
 import 'package:new_meal_app/Screenn/main_drawer.dart';
 import 'package:new_meal_app/Screenn/meals.dart';
 import 'package:new_meal_app/models/meal.dart';
@@ -17,13 +18,12 @@ class _tabsState extends State<tabs> {
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(
-          elevation: 5,
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        elevation: 5,
+        duration: const Duration(seconds: 2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         content: Text(message)));
   }
 
@@ -49,6 +49,17 @@ class _tabsState extends State<tabs> {
     });
   }
 
+  void _setscreen(String identifier) {
+
+    Navigator.of(context).pop();
+    if (identifier == "filters") {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) {
+        return const FiltersScreen();
+      }));
+    } 
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget activepage =
@@ -66,7 +77,7 @@ class _tabsState extends State<tabs> {
       appBar: AppBar(
         title: Text(activepagetitle),
       ),
-      drawer:const  mainDrawer(),
+      drawer: mainDrawer(onselectscren: _setscreen),
       body: activepage,
       bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:new_meal_app/main.dart';
 
 class mainDrawer extends StatelessWidget {
-  const mainDrawer({super.key});
+  const mainDrawer({super.key, required this.onselectscren});
+
+  final void Function(String identifier) onselectscren;
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +53,10 @@ class mainDrawer extends StatelessWidget {
                     fontSize: 24,
                   ),
             ),
-
-          onTap: (){},
-          
+            onTap: () {
+              onselectscren("meals");
+            },
           ),
-
           ListTile(
             leading: Icon(
               Icons.settings,
@@ -69,11 +70,10 @@ class mainDrawer extends StatelessWidget {
                     fontSize: 24,
                   ),
             ),
-
-          onTap: (){},
-          
+            onTap: () {
+              onselectscren("filters");
+            },
           ),
-
         ],
       ),
     );
