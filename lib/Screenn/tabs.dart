@@ -49,15 +49,15 @@ class _tabsState extends State<tabs> {
     });
   }
 
-  void _setscreen(String identifier) {
-
+  void _setscreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == "filters") {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) {
+      final result = await Navigator.of(context)
+          .push<Map<Filter, bool>>(MaterialPageRoute(builder: (ctx) {
         return const FiltersScreen();
       }));
-    } 
+      
+    }
   }
 
   @override
