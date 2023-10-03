@@ -3,7 +3,15 @@ import 'package:new_meal_app/Screenn/categories.dart';
 import 'package:new_meal_app/Screenn/filters.dart';
 import 'package:new_meal_app/Screenn/main_drawer.dart';
 import 'package:new_meal_app/Screenn/meals.dart';
+import 'package:new_meal_app/data/dummy_data.dart';
 import 'package:new_meal_app/models/meal.dart';
+
+const kInitialValue = {
+  Filter.gluteenfree: false,
+  Filter.lactosefrree: false,
+  Filter.vegan: false,
+  Filter.vegetarian: false,
+};
 
 class tabs extends StatefulWidget {
   const tabs({super.key});
@@ -15,6 +23,7 @@ class tabs extends StatefulWidget {
 class _tabsState extends State<tabs> {
   int _selectPageIndex = 0;
   final List<Meal> _favouritemeal = [];
+  Map<Filter, bool> _selectedFilter = kInitialValue;
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -56,14 +65,35 @@ class _tabsState extends State<tabs> {
           .push<Map<Filter, bool>>(MaterialPageRoute(builder: (ctx) {
         return const FiltersScreen();
       }));
-      
+
+      setState(() {
+        _selectedFilter = result ?? kInitialValue;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget activepage =
-        CategoryScreen(ontoggleFavouurite: _toogleMealFavouriteStatus);
+    final availableMeals = dummyMeals.where((meal) {
+      if (_selectedFilter[Filter.gluteenfree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilter[Filter.lactosefrree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilter[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilter[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      return true;
+    }).toList();
+
+    Widget activepage = CategoryScreen(
+      ontoggleFavouurite: _toogleMealFavouriteStatus,
+      availableMeals: availableMeals,
+    );
     var activepagetitle = 'Categories';
     if (_selectPageIndex == 1) {
       activepage = Meals(
