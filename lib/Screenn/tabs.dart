@@ -63,7 +63,7 @@ class _tabsState extends State<tabs> {
     if (identifier == "filters") {
       final result = await Navigator.of(context)
           .push<Map<Filter, bool>>(MaterialPageRoute(builder: (ctx) {
-        return const FiltersScreen();
+        return FiltersScreen(currentFilter: _selectedFilter);
       }));
 
       setState(() {

@@ -12,7 +12,9 @@ enum Filter {
 }
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.currentFilter});
+
+  final Map<Filter, bool> currentFilter;
 
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();
@@ -23,6 +25,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
   var _lactoseFilterSet = false;
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _gluteenFilterSet = widget.currentFilter[Filter.gluteenfree]!;
+    _lactoseFilterSet = widget.currentFilter[Filter.lactosefrree]!;
+    _veganFilterSet = widget.currentFilter[Filter.vegan]!;
+    _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,28 +75,28 @@ class _FiltersScreenState extends State<FiltersScreen> {
             filtertype(
                 type: _lactoseFilterSet,
                 onChanged: (newValue) {
-                setState(() {
-                  _lactoseFilterSet= newValue;
-                });
-              },
+                  setState(() {
+                    _lactoseFilterSet = newValue;
+                  });
+                },
                 title: "Lactose-Free",
                 subtitle: "food is lactose free"),
             filtertype(
                 type: _vegetarianFilterSet,
                 onChanged: (newValue) {
-                setState(() {
-                 _vegetarianFilterSet  = newValue;
-                });
-              },
+                  setState(() {
+                    _vegetarianFilterSet = newValue;
+                  });
+                },
                 title: "Vegetarian",
                 subtitle: "food is vegetarian"),
             filtertype(
                 type: _veganFilterSet,
                 onChanged: (newValue) {
-                setState(() {
-                  _veganFilterSet = newValue;
-                });
-              },
+                  setState(() {
+                    _veganFilterSet = newValue;
+                  });
+                },
                 title: "vegan",
                 subtitle: "food is vegan"),
           ],
