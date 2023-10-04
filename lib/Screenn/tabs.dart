@@ -6,6 +6,7 @@ import 'package:new_meal_app/Screenn/main_drawer.dart';
 import 'package:new_meal_app/Screenn/meals.dart';
 import 'package:new_meal_app/provider/favourite_provider.dart';
 import 'package:new_meal_app/provider/meals_provider.dart';
+import 'package:new_meal_app/provider/filter_provider.dart';
 
 const kInitialValue = {
   Filter.gluteenfree: false,
