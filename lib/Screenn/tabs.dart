@@ -4,9 +4,8 @@ import 'package:new_meal_app/Screenn/categories.dart';
 import 'package:new_meal_app/Screenn/filters.dart';
 import 'package:new_meal_app/Screenn/main_drawer.dart';
 import 'package:new_meal_app/Screenn/meals.dart';
-import 'package:new_meal_app/data/dummy_data.dart';
+import 'package:new_meal_app/provider/favourite_provider.dart';
 import 'package:new_meal_app/provider/meals_provider.dart';
-import 'package:new_meal_app/models/meal.dart';
 
 const kInitialValue = {
   Filter.gluteenfree: false,
@@ -24,35 +23,7 @@ class tabs extends ConsumerStatefulWidget {
 
 class _tabsState extends ConsumerState<tabs> {
   int _selectPageIndex = 0;
-  final List<Meal> _favouritemeal = [];
   Map<Filter, bool> _selectedFilter = kInitialValue;
-
-  void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        elevation: 5,
-        duration: const Duration(seconds: 2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        content: Text(message)));
-  }
-
-  void _toogleMealFavouriteStatus(Meal meal) {
-    final isExisting = _favouritemeal.contains(meal);
-
-    if (isExisting) {
-      setState(() {
-        _favouritemeal.remove(meal);
-      });
-      _showInfoMessage("Removed from favourite list");
-    } else {
-      setState(() {
-        _favouritemeal.add(meal);
-        _showInfoMessage("Added to favourite List");
-      });
-    }
-  }
 
   void _selectPage(int index) {
     setState(() {
@@ -94,14 +65,13 @@ class _tabsState extends ConsumerState<tabs> {
     }).toList();
 
     Widget activepage = CategoryScreen(
-      ontoggleFavouurite: _toogleMealFavouriteStatus,
       availableMeals: availableMeals,
     );
     var activepagetitle = 'Categories';
     if (_selectPageIndex == 1) {
+      final favouriteMeals = ref.watch(favouriteMealsProvider);
       activepage = Meals(
-        meal: _favouritemeal,
-        ontoggleFavouurite: _toogleMealFavouriteStatus,
+        meal: favouriteMeals,
       );
       activepagetitle = 'Favourite';
     }
