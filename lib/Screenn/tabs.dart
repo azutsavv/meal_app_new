@@ -24,7 +24,6 @@ class tabs extends ConsumerStatefulWidget {
 
 class _tabsState extends ConsumerState<tabs> {
   int _selectPageIndex = 0;
-  Map<Filter, bool> _selectedFilter = kInitialValue;
 
   void _selectPage(int index) {
     setState(() {
@@ -35,31 +34,28 @@ class _tabsState extends ConsumerState<tabs> {
   void _setscreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == "filters") {
-      final result = await Navigator.of(context)
+      await Navigator.of(context)
           .push<Map<Filter, bool>>(MaterialPageRoute(builder: (ctx) {
-        return FiltersScreen(currentFilter: _selectedFilter);
+        return const FiltersScreen();
       }));
-
-      setState(() {
-        _selectedFilter = result ?? kInitialValue;
-      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(mealsProvider);
+    final activeFilters = ref.watch(filterProvider);
     final availableMeals = meals.where((meal) {
-      if (_selectedFilter[Filter.gluteenfree]! && !meal.isGlutenFree) {
+      if (activeFilters[Filter.gluteenfree]! && !meal.isGlutenFree) {
         return false;
       }
-      if (_selectedFilter[Filter.lactosefrree]! && !meal.isLactoseFree) {
+      if (activeFilters[Filter.lactosefrree]! && !meal.isLactoseFree) {
         return false;
       }
-      if (_selectedFilter[Filter.vegetarian]! && !meal.isVegetarian) {
+      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
         return false;
       }
-      if (_selectedFilter[Filter.vegan]! && !meal.isVegan) {
+      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
         return false;
       }
       return true;

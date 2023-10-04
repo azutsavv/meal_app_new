@@ -6,98 +6,58 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:new_meal_app/Screenn/tabs.dart';
 // import 'package:new_meal_app/main.dart';
 
-
-
-class FiltersScreen extends ConsumerStatefulWidget {
-  const FiltersScreen({super.key, required this.currentFilter});
-
-  final Map<Filter, bool> currentFilter;
+class FiltersScreen extends ConsumerWidget {
+  const FiltersScreen({
+    super.key,
+  });
 
   @override
-  ConsumerState<FiltersScreen> createState() => _FiltersScreenState();
-}
-
-class _FiltersScreenState extends ConsumerState<FiltersScreen> {
-  var _gluteenFilterSet = false;
-  var _lactoseFilterSet = false;
-  var _vegetarianFilterSet = false;
-  var _veganFilterSet = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _gluteenFilterSet = widget.currentFilter[Filter.gluteenfree]!;
-    _lactoseFilterSet = widget.currentFilter[Filter.lactosefrree]!;
-    _veganFilterSet = widget.currentFilter[Filter.vegan]!;
-    _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pop({
-          Filter.gluteenfree: _gluteenFilterSet,
-          Filter.lactosefrree: _lactoseFilterSet,
-          Filter.vegan: _veganFilterSet,
-          Filter.vegetarian: _vegetarianFilterSet,
-        });
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Yours Filters"),
-        ),
-        // drawer: mainDrawer(
-        //   onselectscren: (identifier) {
-        //     Navigator.of(context).pop();
-        //     if(identifier=="meals"){
-        //       Navigator.of(context).pushReplacement
-        //       (MaterialPageRoute(builder:(ctx) =>const tabs() ,))
-        //     }
-        //   },
-        // ),
-        body: Column(
-          children: [
-            filtertype(
-              type: _gluteenFilterSet,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final activeFilters = ref.watch(filterProvider);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Yours Filters"),
+      ),
+      body: Column(
+        children: [
+          filtertype(
+            type: activeFilters[Filter.gluteenfree]!,
+            onChanged: (newValue) {
+              ref
+                  .read(filterProvider.notifier)
+                  .setfilter(Filter.gluteenfree, newValue);
+            },
+            title: "Gluteen-Free",
+            subtitle: "food is gluteen free",
+          ),
+          filtertype(
+              type: activeFilters[Filter.lactosefrree]!,
               onChanged: (newValue) {
-                setState(() {
-                  _gluteenFilterSet = newValue;
-                });
+                ref
+                    .read(filterProvider.notifier)
+                    .setfilter(Filter.lactosefrree, newValue);
               },
-              title: "Gluteen-Free",
-              subtitle: "food is gluteen free",
-            ),
-            filtertype(
-                type: _lactoseFilterSet,
-                onChanged: (newValue) {
-                  setState(() {
-                    _lactoseFilterSet = newValue;
-                  });
-                },
-                title: "Lactose-Free",
-                subtitle: "food is lactose free"),
-            filtertype(
-                type: _vegetarianFilterSet,
-                onChanged: (newValue) {
-                  setState(() {
-                    _vegetarianFilterSet = newValue;
-                  });
-                },
-                title: "Vegetarian",
-                subtitle: "food is vegetarian"),
-            filtertype(
-                type: _veganFilterSet,
-                onChanged: (newValue) {
-                  setState(() {
-                    _veganFilterSet = newValue;
-                  });
-                },
-                title: "vegan",
-                subtitle: "food is vegan"),
-          ],
-        ),
+              title: "Lactose-Free",
+              subtitle: "food is lactose free"),
+          filtertype(
+              type: activeFilters[Filter.vegetarian]!,
+              onChanged: (newValue) {
+                ref
+                    .read(filterProvider.notifier)
+                    .setfilter(Filter.vegetarian, newValue);
+              },
+              title: "Vegetarian",
+              subtitle: "food is vegetarian"),
+          filtertype(
+              type: activeFilters[Filter.vegan]!,
+              onChanged: (newValue) {
+                ref
+                    .read(filterProvider.notifier)
+                    .setfilter(Filter.vegan, newValue);
+              },
+              title: "vegan",
+              subtitle: "food is vegan"),
+        ],
       ),
     );
   }
