@@ -14,7 +14,8 @@ class CategoryScreen extends StatefulWidget {
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> with SingleTickerProviderStateMixin {
+class _CategoryScreenState extends State<CategoryScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
@@ -27,6 +28,8 @@ class _CategoryScreenState extends State<CategoryScreen> with SingleTickerProvid
       lowerBound: 0,
       upperBound: 1,
     );
+
+    _animationController.forward();
   }
 
   @override
@@ -50,22 +53,32 @@ class _CategoryScreenState extends State<CategoryScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      padding: const EdgeInsets.all(8),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-      ),
-      children: [
-        for (final category in availableCategories)
-          CategoryGridItems(
-              category: category,
-              onselectedCategory: () {
-                _selectedCategory(context, category);
-              })
-      ],
-    );
+    return AnimatedBuilder(
+        animation: _animationController,
+        child: GridView(
+          padding: const EdgeInsets.all(8),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+          ),
+          children: [
+            for (final category in availableCategories)
+              CategoryGridItems(
+                  category: category,
+                  onselectedCategory: () {
+                    _selectedCategory(context, category);
+                  })
+          ],
+        ),
+        builder: (context, child) => SlideTransition(
+              position: Tween(
+                begin: const Offset(0, 0.3),
+                end: const Offset(0, 0),
+              ).animate(CurvedAnimation(
+                  parent: _animationController, curve: Curves.easeInOut)),
+              child: child,
+            ));
   }
 }
